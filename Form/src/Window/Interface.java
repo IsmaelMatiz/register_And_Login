@@ -6,6 +6,9 @@
 package Window;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author sants
@@ -94,7 +97,7 @@ public class Interface extends javax.swing.JFrame {
                 jTextNameActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextName, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 200, -1));
+        getContentPane().add(jTextName, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 200, -1));
         getContentPane().add(jTextPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 200, -1));
 
         jTextEmail.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +106,13 @@ public class Interface extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jTextEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, 200, -1));
-        getContentPane().add(jTextAdress, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 200, -1));
+
+        jTextAdress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextAdressActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jTextAdress, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 200, -1));
         getContentPane().add(jPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, 200, -1));
 
         jButtonSend.setBackground(new java.awt.Color(0, 0, 0));
@@ -124,7 +133,39 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
+        //Manage the "Database"
+        File file = new File("..","Datos.csv");//access to the file
+        PrintWriter wri;//funcion for write
+        String Name,Phone,Email,Adress,Password;
+        Name = jTextName.getText();
+        Phone = jTextPhone.getText();
+        Email = jTextEmail.getText();
+        Adress = jTextAdress.getText();
+        Password = jPassword.getText();
         
+        
+        if (!file.exists())
+        {
+            try{
+            file.createNewFile();
+            System.out.print(file.getName()+" Ha sido creado");
+            }catch(IOException ex){ex.printStackTrace();}
+        }
+        else{
+            try {
+                FileWriter fstream = new FileWriter(file, true);
+                BufferedWriter out = new BufferedWriter(fstream);
+                out.write("\n3,"+Name+","+Phone+","+Email+","+Adress+","+Password);
+                out.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+            System.out.println("Error: "+ex.getMessage());
+        }
+            System.out.println("Registro Agregado exitosamente");
+        }
     }//GEN-LAST:event_jButtonSendActionPerformed
 
     private void jTextNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNameActionPerformed
@@ -138,6 +179,10 @@ public class Interface extends javax.swing.JFrame {
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButtonExitActionPerformed
+
+    private void jTextAdressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextAdressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextAdressActionPerformed
 
     /**
      * @param args the command line arguments
